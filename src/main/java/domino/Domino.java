@@ -27,4 +27,19 @@ public class Domino {
     public int getValue(){
         return left + right;
     }
+
+    //перевернуть костяшку, поменять местами части
+    public Domino flip() {
+        return new Domino(right, left);
+    }
+
+    //проверка значения
+    public boolean matches(int value) {
+        return left == value || right == value;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + left + "|" + right + "]";
+    }
 }
