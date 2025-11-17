@@ -8,7 +8,7 @@ import java.util.List;
 public class DominoSet {
     private List<Domino> dominoes;
 
-    public DominoSet(List<Domino> dominoes) {
+    public DominoSet() {
         dominoes = new ArrayList<>();
         generate();
     }
@@ -36,9 +36,17 @@ public class DominoSet {
 
     public  List<Domino> draw(int count) {
         List<Domino> drawn = new ArrayList<>();
-        for (int i = 0; i <= count && !dominoes.isEmpty(); i++) {
+        for (int i = 0; i < count && !dominoes.isEmpty(); i++) {
             drawn.add(draw());
         }
         return drawn;
+    }
+
+    public boolean isEmpty() {
+        return dominoes.isEmpty();
+    }
+
+    public int size() {
+        return dominoes.size();
     }
 }
