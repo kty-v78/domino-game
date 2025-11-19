@@ -21,7 +21,7 @@ public class DominoSet {
         }
     }
 
-    //перемешать наюор костяшек
+    //перемешать набор костяшек
     public void shuffle(){
         Collections.shuffle(dominoes);
     }
