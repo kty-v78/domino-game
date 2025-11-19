@@ -22,15 +22,19 @@ public class DominoBoard {
             return true;
         }
 
-        if(domino.matches(leftEnd)) {
-            Domino toAdd = domino;
-            if (domino.getRight() == leftEnd) {
-                toAdd = domino.flip();
-            }
-            board.add(0, toAdd);
-            leftEnd = toAdd.getLeft();
+        if (domino.getRight() == leftEnd) {
+            board.add(0, domino);
+            leftEnd = domino.getLeft();
             return true;
         }
+
+        if (domino.getLeft() == leftEnd) {
+            Domino flipped = domino.flip();
+            board.add(0, flipped);
+            leftEnd = flipped.getLeft();
+            return true;
+        }
+
         return false;
     }
 
@@ -38,17 +42,24 @@ public class DominoBoard {
         if (board.isEmpty()) {
             return addToLeft(domino);
         }
-        if (domino.matches(rightEnd)) {
-            Domino toAdd = domino;
-            if (domino.getLeft() == rightEnd) {
-                toAdd = domino.flip();
-            }
-            board.add(toAdd);
-            rightEnd = toAdd.getRight();
+
+        if (domino.getLeft() == rightEnd) {
+            board.add(domino);
+            rightEnd = domino.getRight();
             return true;
         }
+
+        if (domino.getRight() == rightEnd) {
+            Domino flipped = domino.flip();
+            board.add(flipped);
+            rightEnd = flipped.getRight();
+            return true;
+        }
+
         return false;
     }
+
+
     public boolean playDomino(Domino domino) {
         return addToLeft(domino) || addToRight(domino);
     }

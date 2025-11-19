@@ -1,4 +1,7 @@
 package domino;
 
-public class GameState {
+public enum GameState {
+    NOT_STARTED,
+    IN_PROGRESS,
+    GAME_OVER
 }
