@@ -147,11 +147,13 @@ public class DominoGame {
                     nextPlayer();
                 }
                 return true;
+            } else {
+                // Неподходящая костяшка - не переходим к следующему игроку
+                return false;
             }
         }
 
-        // Если не может сыграть выбранную костяшку, проверяем есть ли вообще возможные ходы
-        boolean hasPlayableDomino = currentPlayer.hasPlayerDomino(board.getLeftEnd(), board.getRightEnd());  // Исправлено: было hasPlayerDomino
+        boolean hasPlayableDomino = currentPlayer.hasPlayerDomino(board.getLeftEnd(), board.getRightEnd());
 
         if (!hasPlayableDomino) {
             // Нет подходящих костяшек - берем из базара
@@ -164,12 +166,11 @@ public class DominoGame {
                     // Проверяем, можно ли сыграть только что взятую костяшку
                     boolean canPlayDrawn = drawn.matches(board.getLeftEnd()) || drawn.matches(board.getRightEnd());
                     if (canPlayDrawn) {
-                        // Может сыграть взятую костяшку сразу
                         if (board.playDomino(drawn)) {
                             currentPlayer.removeDomino(drawn);
                             System.out.println(currentPlayer.getName() + " сразу играет взятую костяшку: " + drawn);
                             checkRoundEnd();
-                            if (!isGameOver()) {  // Исправлено: было game.isGameOver()
+                            if (!isGameOver()) { // Исправлено: было game.isGameOver()
                                 nextPlayer();
                             }
                             return true;
@@ -177,14 +178,12 @@ public class DominoGame {
                     }
                 }
             }
-
-            // После взятия из базара (независимо от того, сыграли или нет) переходим к следующему игроку
+            // После взятия из базара переходим к следующему игроку
             nextPlayer();
             return false;
         } else {
-            // У игрока есть подходящие костяшки, но он выбрал неподходящую или хочет взять из базара
+            // У игрока есть подходящие костяшки, но он сознательно выбрал "Взять из базара"
             if (!dominoSet.isEmpty() && domino == null) {
-                // Игрок сознательно выбрал "Взять из базара"
                 Domino drawn = dominoSet.draw();
                 if (drawn != null) {
                     currentPlayer.addDomino(drawn);
