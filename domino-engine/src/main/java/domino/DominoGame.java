@@ -203,34 +203,41 @@ public class DominoGame {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     }
 
+
     /**
-     * Проверяет условия завершения игры.
-     * Игра завершается если игрок избавился от всех костяшек или если игра заблокирована.
+     * Проверяет условия завершения раунда/игры.
+     * Игра завершается если:
+     * 1. У какого-то игрока закончились костяшки (победитель)
+     * 2. Игра заблокирована ("рыба") - никто не может ходить и базар пуст
      */
     private void checkRoundEnd() {
-        // Если у кого-то 0 костяшек — он победил
-        for (Player p : players) {
-            if (p.getHand().isEmpty()) {
+        // 1. Проверка на победителя (у кого-то 0 костяшек)
+        for (Player player : players) {
+            if (player.getHand().isEmpty()) {
                 gameState = GameState.GAME_OVER;
-                winner = p;
+                winner = player;
                 return;
             }
         }
 
-        // Проверяем, может ли КТО-НИБУДЬ сыграть
-        boolean someoneCanPlay = players.stream()
-                .anyMatch(p -> p.hasPlayerDomino(board.getLeftEnd(), board.getRightEnd()));
+        // 2. Проверка на "рыбу" (заблокированную игру)
+        boolean someoneCanPlay = false;
 
-        // Если никто не может ходить, но БАЗАР ЕЩЁ НЕ ПУСТ — игра продолжается
-        if (!someoneCanPlay && !dominoSet.isEmpty()) {
-            return;
+        // Проверяем, может ли кто-нибудь из игроков сделать ход
+        for (Player player : players) {
+            if (player.hasPlayerDomino(board.getLeftEnd(), board.getRightEnd())) {
+                someoneCanPlay = true;
+                break;
+            }
         }
 
-        // Только если никто не может ходить И базар пуст — конец игры
-        if (!someoneCanPlay) {
+        // Если никто не может ходить и базар пуст - игра окончена
+        if (!someoneCanPlay && dominoSet.isEmpty()) {
             gameState = GameState.GAME_OVER;
-            determineWinnerByPoints();
+            determineWinnerByPoints(); // Определяем победителя по очкам
         }
+        // Если никто не может ходить, но в базаре еще есть костяшки - игра продолжается
+        // (игроки будут брать из базара пока не найдут подходящую)
     }
 
 
