@@ -7,6 +7,12 @@
     <groupId>org.example</groupId>
     <artifactId>Domino</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>domino-engine</module>
+        <module>console</module>
+        <module>gui</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
